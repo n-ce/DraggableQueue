@@ -7,13 +7,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@types/sortablejs": "^1.15.8",
+    "@types/sortablejs": "latest",
     "eruda": "latest",
     "typescript": "latest",
     "vite": "latest"
   },
   "dependencies": {
-    "overlayscrollbars": "^2.5.0",
+    "overlayscrollbars": "latest",
     "sortablejs": "latest"
   }
 }
