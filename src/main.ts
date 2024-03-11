@@ -21,30 +21,44 @@ const colorQueue = [
   'goldenrodyellow'
 ];
 
-Sortable.create(outputQueue, { delay: 10 });
-//inputQueue.toggleAttribute('data-overlayscrollbars-initialize');
-//OverlayScrollbars(inputQueue, {});
-
-inputQueue.addEventListener('click', e => {
-  const el = <HTMLLIElement>e.target;
-  if (el.matches('li'))
-    outputQueue.appendChild(el);
-});
-
-setInterval(() => {
-  if (outputQueue.childElementCount)
-    inputQueue.appendChild(<HTMLLIElement>outputQueue.firstElementChild);
-}, 1e4);
-
-
 const len = colorQueue.length;
 for (let i = 0; i < len; i++) {
   const li = document.createElement('li');
   li.style.backgroundColor = 'light' + colorQueue[i];
-  li.textContent = i.toString();
   inputQueue.appendChild(li);
-
-  if (i == len) {
-
-  }
 }
+
+Sortable.create(outputQueue, { delay: 10 });
+//inputQueue.toggleAttribute('data-overlayscrollbars-initialize');
+//OverlayScrollbars(inputQueue, {});
+
+
+const q = (li: HTMLLIElement, d: number = 1) => setTimeout(
+  () => {
+    li.innerHTML = '';
+    inputQueue.appendChild(li);
+
+    if (outputQueue.hasChildNodes()) {
+      const newli = <HTMLLIElement>outputQueue.firstElementChild;
+      d++;
+      (<HTMLDivElement>newli.lastElementChild).style.animation = `progress ${d * 10}s`;
+      q(newli, d);
+    }
+
+  }, d * 1e4);
+
+
+inputQueue.addEventListener('click', e => {
+  const li = <HTMLLIElement>e.target;
+  if (!li.matches('li')) return;
+  const div1 = document.createElement('div');
+  const div2 = document.createElement('div');
+  if (!outputQueue.hasChildNodes())
+    div2.style.animation = 'progress 10s';
+  q(li);
+  li.append(div1, div2);
+  outputQueue.appendChild(li);
+});
+
+
+
